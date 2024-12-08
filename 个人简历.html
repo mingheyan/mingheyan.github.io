@@ -71,16 +71,23 @@
         }
 
         .achievement-item {
-            margin-bottom: 1rem;
-            padding-left: 1.5rem;
+            margin-bottom: 1.2rem;
+            padding-left: 1.8rem;
             position: relative;
+            transition: all 0.3s ease;
         }
 
         .achievement-item::before {
-            content: "•";
+            content: "🏆";
             position: absolute;
-            left: 0.5rem;
+            left: 0;
             color: #3498db;
+            font-size: 1.1em;
+        }
+
+        .achievement-item:hover {
+            transform: translateX(5px);
+            color: #2980b9;
         }
 
         .info-item {
@@ -124,81 +131,102 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.6);
+            background-color: rgba(0,0,0,0);
             z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
+            transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            perspective: 1000px;
+            overflow: hidden;
         }
 
         .modal.show {
-            opacity: 1;
+            background-color: rgba(0,0,0,0.6);
         }
 
         .modal-content {
             position: relative;
-            background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
-            margin: 10% auto;
-            padding: 40px;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            margin: 3vh auto;
+            padding: 40px 40px 20px 40px;
             width: 75%;
             max-width: 700px;
+            max-height: 94vh;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transform: translateY(-50px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            transform: translateY(60px) scale(0.95);
             opacity: 0;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            will-change: transform, opacity;
+            display: flex;
+            flex-direction: column;
         }
 
         .modal.show .modal-content {
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
             opacity: 1;
         }
 
         #modalTitle {
-            color: #2c3e50;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #3498db;
+            flex-shrink: 0;
             padding-right: 40px;
-            font-size: 1.5em;
-            position: relative;
-        }
-
-        #modalTitle::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 50px;
-            height: 2px;
-            background: #e74c3c;
         }
 
         #modalContent {
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.8);
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 25px;
+            margin: 0 -20px;
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.03);
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: #3498db #f0f0f0;
+        }
+
+        #modalContent::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #modalContent::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+
+        #modalContent::-webkit-scrollbar-thumb {
+            background: #3498db;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        #modalContent::-webkit-scrollbar-thumb:hover {
+            background: #2980b9;
         }
 
         #modalContent ul {
-            list-style: none;
-            padding: 0;
+            padding: 0 20px;
+            margin: 0;
         }
 
         #modalContent li {
-            margin-bottom: 20px;
-            padding-left: 30px;
             position: relative;
-            line-height: 1.6;
-            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            padding: 20px 25px 20px 40px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
             border-left: 3px solid transparent;
-            padding: 10px 10px 10px 30px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(0);
+            will-change: transform, box-shadow;
         }
 
         #modalContent li:hover {
-            background: rgba(52, 152, 219, 0.1);
+            background: rgba(255, 255, 255, 0.95);
             border-left: 3px solid #3498db;
-            transform: translateX(5px);
+            transform: translateX(8px) translateY(-2px);
+            box-shadow: 0 5px 20px rgba(52, 152, 219, 0.15);
         }
 
         #modalContent li:before {
@@ -227,8 +255,8 @@
 
         .close-button {
             position: absolute;
-            right: 25px;
-            top: 25px;
+            right: 20px;
+            top: 20px;
             width: 35px;
             height: 35px;
             background: white;
@@ -241,6 +269,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 2;
         }
 
         .close-button:hover {
@@ -269,6 +298,196 @@
                 background-position: 100% 0;
             }
         }
+
+        .detail-text {
+            font-size: 0.9em;
+            color: #666;
+            margin-left: 20px;
+            margin-top: 5px;
+            padding-left: 15px;
+            border-left: 2px solid #e8e8e8;
+            transition: all 0.3s ease;
+        }
+
+        #modalContent li {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            margin-bottom: 25px;
+            padding: 15px 20px 15px 35px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        #modalContent li:hover {
+            background: rgba(52, 152, 219, 0.08);
+            border-left: 3px solid #3498db;
+            transform: translateX(5px);
+        }
+
+        #modalContent li:hover .detail-text {
+            border-left-color: #3498db;
+            color: #444;
+        }
+
+        #modalContent li:before {
+            content: "🔓";
+            position: absolute;
+            left: 10px;
+            top: 15px;
+            color: #3498db;
+            font-size: 1.1em;
+        }
+
+        #modalTitle {
+            font-size: 1.6em;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .experience-item {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .experience-item:hover {
+            transform: translateX(5px);
+            border-left: 3px solid #3498db;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.15);
+        }
+
+        .experience-item h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+        }
+
+        .experience-item h3::before {
+            content: "🏢";
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+
+        .experience-item .detail-text {
+            color: #666;
+            margin-left: 2rem;
+            padding-left: 1rem;
+            border-left: 2px solid #e8e8e8;
+            transition: all 0.3s ease;
+        }
+
+        .experience-item:hover .detail-text {
+            border-left-color: #3498db;
+            color: #444;
+        }
+
+        .social-links {
+            margin-top: 1rem;
+            padding-left: 1rem;
+        }
+
+        .social-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem 1rem;
+            background: rgba(52, 152, 219, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .social-item:hover {
+            background: rgba(52, 152, 219, 0.1);
+            transform: translateX(5px);
+        }
+
+        .social-item i {
+            margin-right: 0.8rem;
+            color: #3498db;
+            font-size: 1.2em;
+        }
+
+        .social-item a {
+            color: #3498db;
+            text-decoration: none;
+            margin-right: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-item a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        .badge {
+            background: #3498db;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-left: 0.5rem;
+        }
+
+        .highlight {
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .qrcode-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0);
+            z-index: 1100;
+            transition: background-color 0.3s ease;
+        }
+
+        .qrcode-modal.show {
+            background-color: rgba(0,0,0,0.6);
+        }
+
+        .qrcode-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .qrcode-modal.show .qrcode-content {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .qrcode-image {
+            max-width: 300px;
+            border-radius: 10px;
+        }
+
+        .qrcode-title {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
     </style>
 </head>
 <body>
@@ -283,25 +502,35 @@
             </h2>
             <div class="info-item">
                 <p><strong>学校：</strong>兰州大学（985）</p>
-                <p><strong>社团经历：</strong></p>
-                <ul style="list-style: none; padding-left: 20px;">
-                    <li>• 萃英在线网络技术部 | 成员</li>
-                    <li>• 易班应用开发工作室 | 成员</li>
-                    <li>• 西北开源社区 | 成员（维护西北最大镜像站）</li>
-                </ul>
+                <p><strong>社交平台：</strong></p>
+                <div class="social-links">
+                    <div class="social-item">
+                        <i class="fab fa-blogger"></i>
+                        CSDN：<a href="https://blog.csdn.net/yanminghe66666" target="_blank">Dexter(.*?)</a>
+                        <span class="badge">1000+ 粉丝</span>
+                    </div>
+                    <div class="social-item">
+                        <i class="fas fa-globe"></i>
+                        知识星球：<a href="https://wx.zsxq.com/group/28888285155241" target="_blank">dexter</a>
+                    </div>
+                    <div class="social-item">
+                        <i class="fab fa-weixin"></i>
+                        微信公众号：<a class="highlight" onclick="showQRCode()" style="cursor: pointer;">我真的不是蜘蛛</a>
+                    </div>
+                </div>
             </div>
         </section>
 
         <section class="resume-section">
             <h2 class="section-title">
-                <i class="fas fa-laptop-code"></i>专业技能
+                <i class="fas fa-laptop-code"></i>专业技能与项目经验
             </h2>
             <div class="skill-tags">
                 <span class="skill-tag" onclick="showModal('js-reverse')">JavaScript逆向</span>
                 <span class="skill-tag" onclick="showModal('web-crawler')">网络爬虫</span>
                 <span class="skill-tag" onclick="showModal('web-design')">网页设计</span>
-                <span class="skill-tag" onclick="showModal('data-analysis')">数据分析</span>
-                <span class="skill-tag" onclick="showModal('machine-learning')">机器学习</span>
+                <span class="skill-tag" onclick="showModal('data-analysis')">数据分析和机器学习</span>
+
             </div>
         </section>
 
@@ -310,22 +539,52 @@
                 <i class="fas fa-trophy"></i>获奖经历
             </h2>
             <div class="achievement-item">
-                数学建模国赛省一等奖（A类）
+                高教社杯数学建模竞赛省一等奖（A类）
             </div>
             <div class="achievement-item">
-                多项数学建模省级和国家级奖项
+                全国易班技术创新大赛 国家三等奖
+            </div>
+            <div class="achievement-item">
+                "华数杯"数学建模国家优秀奖
+            </div>
+            <div class="achievement-item">
+                全国互联网+大学生创新创业大赛 校级铜奖
+            </div>
+            <div class="achievement-item">
+                信息科技之信息安全竞赛 二等奖
+            </div>
+            <div class="achievement-item">
+                校优秀学生三等奖学金
             </div>
         </section>
 
         <section class="resume-section">
             <h2 class="section-title">
-                <i class="fas fa-project-diagram"></i>项目经验
+                <i class="fas fa-briefcase"></i>社团经历
             </h2>
-            <div class="achievement-item">
-                通过校社团活动，参与完成多个实战项目
+            <div class="experience-item">
+                <h3>萃英在线网络技术部</h3>
+                <div class="detail-text">
+                    • 参与校园网站开发和维护工作
+                    • 负责技术部门的日常项目开发
+                    • 参与技术分享和团队协作
+                </div>
             </div>
-            <div class="achievement-item">
-                具备扎实的技术功底和团队协作能力
+            <div class="experience-item">
+                <h3>易班应用开发工作室</h3>
+                <div class="detail-text">
+                    • 参与兰大小萃APP的开发维护
+                    • 负责AI+思政平台的开发工作
+                    • 完成多个校园应用的开发任务
+                </div>
+            </div>
+            <div class="experience-item">
+                <h3>兰州大学西北开源社区</h3>
+                <div class="detail-text">
+                    • 参与维护西北最大镜像站
+                    • 参与开源项目的开发和维护
+                    • 组织技术交流活动
+                </div>
             </div>
         </section>
 
@@ -343,15 +602,53 @@
         </div>
     </div>
 
+    <!-- 微信公众号二维码模态框 -->
+    <div id="qrcodeModal" class="qrcode-modal" onclick="closeQRCode()">
+        <div class="qrcode-content" onclick="event.stopPropagation()">
+            <div class="qrcode-title">扫码关注公众号</div>
+            <img src="微信公众号.jpg" alt="微信公众号二维码" class="qrcode-image">
+        </div>
+    </div>
+
     <script>
         const skillDetails = {
             'js-reverse': {
                 title: 'JavaScript逆向项目经验',
                 content: `
                     <ul>
-                        <li>完成某电商平台的商品数据采集，成功破解其加密参数</li>
-                        <li>实现某社交平台的自动化操作，解决了签名验证问题</li>
-                        <li>开发浏览器插件，实现自动化数据采集</li>
+                        <li>破解极验滑块验证码第四代，实现逆向验证通过
+                            <div class="detail-text">
+                                • 分析 webpack加密过程和加密数生成
+                                • 还原 w 参数的迹加密算法
+                                • opencv算出缺口位置
+                            </div>
+                        </li>
+                        <li>突破加速乐 __jsl_clearance_s cookie 生成算法
+                            <div class="detail-text">
+                                • 还原 VM 虚拟机保护的 JavaScript 码
+                                • 模拟执行动态生成的混淆代码
+                                • 自动化获取访问令牌__jsl_clearance_s
+                            </div>
+                        </li>
+                        <li>破解阿里系 acw_sc__v2 参数生成逻辑
+                            <div class="detail-text">
+                                • 还原签名算法和环境检测逻辑
+                                • 实现纯 JavaScript 的参数生成
+                            </div>
+                        </li>
+                        <li>攻克抖音 X-Bogus、a_bogus等签名
+                            <div class="detail-text">
+                                • 逆向加密算法
+                                • 实现 Node.js 接口服务
+                            </div>
+                        </li>
+                        <li>破解某某 x-s加密
+                            <div class="detail-text">
+                                • 分析 AST 混淆代码的执行流程
+                                • 还原加密参数的生成逻辑
+    
+                            </div>
+                        </li>
                     </ul>
                 `
             },
@@ -359,95 +656,198 @@
                 title: '网络爬虫项目经验',
                 content: `
                     <ul>
-                        <li>开发分布式爬虫系统，采集某招聘网站的职位数据</li>
-                        <li>使用Selenium实现自动化测试和数据采集</li>
-                        <li>设计反爬虫策略，提高爬虫成功率</li>
+                        <li>自动化工具与框架应用
+                            <div class="detail-text">
+                                • 熟练使用 Playwright、DrissionPage、Selenium 等自动化工具
+                                • 基于 Scrapy 框架开发分布式爬虫系统
+                                • 使用 RPC 技术实现快速请求
+                                • 使用 celery 实现分布式任务调度
+                            </div>
+                        </li>
+                        <li>反爬技术攻克
+                            <div class="detail-text">
+                                • 解决字体反爬，参数加密等反爬措施
+                                • 使用 Hook 技术拦截和修改 JavaScript 执行
+                                • 熟练使用 Charles、Fiddler、Reqable等抓取工具
+                            </div>
+                        </li>
+                        <li>性能优化与并发控制
+                            <div class="detail-text">
+                                • 实现多线程、多进程、协程等并发爬虫
+                                • 设计 IP 代理池自动切换机制
+                                • 使用redis去重和任务调度
+                            </div>
+                        </li>
+                        <li>环模拟与请求伪装
+                            <div class="detail-text">
+                                • 补充浏览器环境，模拟真实请求环境
+                                • 还原 Webpack 打包的加密模块
+                            </div>
+                        </li>
+                        <li>特殊平台数据采集
+                            <div class="detail-text">
+                                • 微信公众号文章批量采集
+                                • 各类验证码的识别与绕过
+                            </div>
+                        </li>
                     </ul>
                 `
             },
             'web-design': {
-                title: '网页设计项目经验',
+                title: '网页设计与全栈开发经验',
                 content: `
                     <ul>
-                        <li>设计并开发个人博客网站</li>
-                        <li>参与校园网站的改版工作</li>
-                        <li>制作响应式网页设计</li>
+                        <li>兰大小萃 APP 开发维护
+                            <div class="detail-text">
+                                • 使用 uni-app 开发跨平台移动应用
+                                • 基于 Django 构建后端服务架构
+                                • 负责用户界面优化和交互设计
+                                • 实现响应式布局适配多端显示
+                            </div>
+                        </li>
+                        <li>AI+ 思政平台开发
+                            <div class="detail-text">
+                                • 基于 RGA 模型开发情感疏解模块
+                                • 设计实现图说文化展示功能
+                                • 负责数据接口开发和性能优化
+                                • 完成前端界面美化和交互优化
+                            </div>
+                        </li>
+                        <li>全栈开发技术栈
+                            <div class="detail-text">
+                                • 前端：Vue.js、uni-app、HTML5/CSS3
+                                • 后端：Django、Flask
+                                • 数据库设计和性能优化
+                                • 前后端分离架构实践
+                            </div>
+                        </li>
+                        <li>UI/UX 设计能力
+                            <div class="detail-text">
+                                • 设计直观友好的用户界面
+                                • 优化用户交互体验
+                                • 实现流畅的动画效果
+                                • 注重��节和用户反馈
+                            </div>
+                        </li>
+                        <li>项目管理与协作
+                            <div class="detail-text">
+                                • 参与需求分析和功能设计
+                                • 使用 git 进行代码版本控制和团队协作
+                                • 项目文档编写和维护
+                                • 性能监控和问题排查
+                            </div>
+                        </li>
                     </ul>
                 `
             },
             'data-analysis': {
-                title: '数据分析项目经验',
+                title: '数据分析与机器学习经验',
                 content: `
                     <ul>
-                        <li>使用Python进行数据清洗和分析</li>
-                        <li>运用统计方法进行数据建模</li>
-                        <li>数据可视化展示和报告撰写</li>
+                        <li>数学建模竞赛成果
+                            <div class="detail-text">
+                                • 高教社杯数学建模竞赛省一等奖（A类）
+                                • 多次获得数学建模省级和国家级奖项
+                                • 掌握数据预处理和特征工程技术
+                                • 熟练使用 spss、Python 等建模工具
+                            </div>
+                        </li>
+                        <li>机器学习算法应用
+                            <div class="detail-text">
+                                • 掌握机器学习算法（SVM、决策树、随机森林等）
+                                • 了解无监督学习方法（聚类、降维）
+                                • 具备模型评估和优化能力
+                            </div>
+                        </li>
+                        <li>数据分析与可视化
+                            <div class="detail-text">
+                                • 使用 Pandas、NumPy 进行数据处理
+                                • 应用 Matplotlib、Seaborn 进行数据可视化
+                                • 统计分析和假设检验
+                                • 时间序列数据分析
+                            </div>
+                        </li>
+                        <li>建模实践经验
+                            <div class="detail-text">
+                                参与多个实际建模项目
+                                • 数据挖掘和预测分析
+                                • 优化算法设计与实现
+                                • 模型部署和性能调优
+                            </div>
+                        </li>
+                       
                     </ul>
                 `
             },
-            'machine-learning': {
-                title: '机器学习项目经验',
-                content: `
-                    <ul>
-                        <li>参与图像识别项目开发</li>
-                        <li>实现自然语言处理模型</li>
-                        <li>开发推荐系统算法</li>
-                    </ul>
-                `
-            }
+           
         };
 
         function showModal(skillId) {
             const modal = document.getElementById('skillModal');
             const modalTitle = document.getElementById('modalTitle');
             const modalContent = document.getElementById('modalContent');
+            const content = modal.querySelector('.modal-content');
+            
+            // 重置所有样式
+            modal.style.backgroundColor = 'rgba(0,0,0,0)';
+            content.style.transform = 'translateY(60px) scale(0.95)';
+            content.style.opacity = '0';
+            content.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
             
             modalTitle.textContent = skillDetails[skillId].title;
             modalContent.innerHTML = skillDetails[skillId].content;
             
             modal.style.display = 'block';
+            
+            // 强制重排以确保动画正确播放
+            void modal.offsetWidth;
+            
             requestAnimationFrame(() => {
                 modal.classList.add('show');
+                content.style.transform = 'translateY(0) scale(1)';
+                content.style.opacity = '1';
             });
 
-            // 为每个列表项添加动画
+            // 为每个列表项添加渐进式动画
             const listItems = modalContent.querySelectorAll('li');
             listItems.forEach((item, index) => {
                 item.style.opacity = '0';
-                item.style.animation = `fadeInUp 0.5s ease-out ${index * 0.1 + 0.2}s forwards`;
+                item.style.transform = 'translateX(-20px)';
+                setTimeout(() => {
+                    item.style.transition = 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0)';
+                }, 100 + index * 100);
             });
 
-            // 添加鼠标移动视差效果
-            modal.addEventListener('mousemove', (e) => {
-                const rect = modal.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const xPercent = (x / rect.width - 0.5) * 2;
-                const yPercent = (y / rect.height - 0.5) * 2;
-                
-                const content = modal.querySelector('.modal-content');
-                content.style.transform = `
-                    translateX(${xPercent * 5}px) 
-                    translateY(${yPercent * 5}px)
-                    rotateX(${-yPercent * 2}deg)
-                    rotateY(${xPercent * 2}deg)
-                `;
-            });
-
-            // 鼠标离开时重置变换
-            modal.addEventListener('mouseleave', () => {
-                const content = modal.querySelector('.modal-content');
-                content.style.transform = 'none';
-            });
+            // 添加事件监听器
+            modal.addEventListener('mousemove', handleMouseMove);
+            modal.addEventListener('mouseleave', handleMouseLeave);
         }
 
         function closeModal() {
             const modal = document.getElementById('skillModal');
+            const content = modal.querySelector('.modal-content');
+            
+            // 重置所有变换和过渡效果
+            content.style.transform = 'translateY(30px) scale(0.95)';
+            content.style.opacity = '0';
             modal.classList.remove('show');
+            modal.style.backgroundColor = 'rgba(0,0,0,0)';
+            
+            // 清除所有事件监听器
+            modal.removeEventListener('mousemove', handleMouseMove);
+            modal.removeEventListener('mouseleave', handleMouseLeave);
+            
             setTimeout(() => {
                 modal.style.display = 'none';
-            }, 300);
+                // 重置内容区域的滚动置
+                document.getElementById('modalContent').scrollTop = 0;
+                // 重置变换状态
+                content.style.transform = 'translateY(60px) scale(0.95)';
+                // 清除所有内联样式
+                content.style.transition = '';
+            }, 400);
         }
 
         // 点击模态框外部关闭
@@ -462,6 +862,61 @@
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 closeModal();
+            }
+        });
+
+        function handleMouseMove(e) {
+            if (this.timeout) {
+                window.cancelAnimationFrame(this.timeout);
+            }
+            
+            this.timeout = window.requestAnimationFrame(() => {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const xPercent = ((x / rect.width) - 0.5) * 2;
+                const yPercent = ((y / rect.height) - 0.5) * 2;
+                
+                const content = this.querySelector('.modal-content');
+                content.style.transform = `
+                    translateX(${xPercent * 3}px)
+                    translateY(${yPercent * 3}px)
+                    rotateX(${-yPercent * 1}deg)
+                    rotateY(${xPercent * 1}deg)
+                `;
+            });
+        }
+
+        function handleMouseLeave() {
+            const content = this.querySelector('.modal-content');
+            content.style.transition = 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            content.style.transform = 'none';
+            setTimeout(() => {
+                content.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            }, 600);
+        }
+
+        function showQRCode() {
+            const modal = document.getElementById('qrcodeModal');
+            modal.style.display = 'block';
+            requestAnimationFrame(() => {
+                modal.classList.add('show');
+            });
+        }
+
+        function closeQRCode() {
+            const modal = document.getElementById('qrcodeModal');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        // 添加 ESC 键关闭二维码功能
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeQRCode();
             }
         });
     </script>
