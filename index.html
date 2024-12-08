@@ -176,6 +176,81 @@
             color: #2c3e50;
             font-size: 1.2rem;
         }
+
+        .qrcode-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            z-index: 1000;
+        }
+
+        .qrcode-content {
+            position: relative;
+            width: 400px;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+        }
+
+        .qrcode-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .qrcode-image {
+            width: 280px;
+            height: 280px;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+        }
+
+        .close-button {
+            position: absolute;
+            right: -15px;
+            top: -15px;
+            width: 30px;
+            height: 30px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            font-size: 18px;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .close-button:hover {
+            transform: rotate(90deg);
+            background: #f5f5f5;
+        }
+
+        @media (max-width: 500px) {
+            .qrcode-content {
+                width: 90%;
+                padding: 20px;
+            }
+            
+            .qrcode-image {
+                width: 220px;
+                height: 220px;
+            }
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
@@ -247,15 +322,55 @@
         <h2>联系我</h2>
         <p>欢迎通过以下方式与我联系</p>
         <div class="social-links">
-            <a href="#"><i class="fab fa-github"></i></a>
-            <a href="#"><i class="fab fa-weixin"></i></a>
-            <a href="#"><i class="fab fa-qq"></i></a>
-            <a href="#"><i class="fas fa-envelope"></i></a>
+            <a href="#" onclick="showQRCode('weixin')"><i class="fab fa-weixin"></i></a>
+            <a href="#" onclick="showQRCode('qq')"><i class="fab fa-qq"></i></a>
+
         </div>
     </section>
+
+    <div id="qrcodeModal" class="qrcode-modal" onclick="closeQRCode()">
+        <div class="qrcode-content" onclick="event.stopPropagation()">
+            <span class="close-button" onclick="closeQRCode()">&times;</span>
+            <div class="qrcode-title" id="qrcodeTitle"></div>
+            <img id="qrcodeImage" class="qrcode-image" src="" alt="二维码">
+        </div>
+    </div>
 
     <footer>
         <p>&copy; 2024 颜名赫的个人网站 版权所有</p>
     </footer>
+
+    <script>
+        function showQRCode(type) {
+            const modal = document.getElementById('qrcodeModal');
+            const title = document.getElementById('qrcodeTitle');
+            const image = document.getElementById('qrcodeImage');
+            
+            switch(type) {
+                case 'weixin':
+                    title.textContent = '微信';
+                    image.src = 'images/weixin.jpg';
+                    break;
+                case 'qq':
+                    title.textContent = 'QQ';
+                    image.src = 'images/qq.png';
+                    break;
+
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        function closeQRCode() {
+            const modal = document.getElementById('qrcodeModal');
+            modal.style.display = 'none';
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeQRCode();
+            }
+        });
+    </script>
 </body>
 </html>
